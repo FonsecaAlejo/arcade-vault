@@ -26,11 +26,8 @@ La app es un proyecto Next.js con App Router (`app/`), actualmente en el estado 
 - El alias de path `@/*` apunta a la raíz del proyecto (ver `tsconfig.json`).
 - El estilado usa Tailwind CSS v4 (`@tailwindcss/postcss`, sin archivo `tailwind.config.*` — la config vive en `app/globals.css`/CSS).
 
-## Comandos
-
-- `npm run dev` — inicia el servidor de desarrollo (Turbopack por defecto en esta versión de Next.js).
-- `npm run build` — build de producción.
-- `npm run start` — corre el build de producción.
-- `npm run lint` — ESLint vía flat config (`eslint.config.mjs`, extiende `eslint-config-next` core-web-vitals + typescript).
-
 Todavía no hay un test runner configurado.
+
+## Skills
+
+- **Diseño de interfaz de usuario**: usar siempre la skill `frontend-design` al crear o modificar UI (nuevas pantallas, componentes, estilos), para mantener una dirección visual intencional y coherente con el sistema de diseño neón/retro-arcade descrito arriba.
