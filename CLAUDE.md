@@ -1,36 +1,36 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Este archivo brinda guía a Claude Code (claude.ai/code) al trabajar con código en este repositorio.
 
 @AGENTS.md
 
-## Project
+## Proyecto
 
-Arcade Vault (`README.md`) is an online arcade platform where users play retro-style games (Bloque Buster, Caída, Serpentina, Glotón, Invasores, Rocas, Ranaria, Duelo Pixel) and compete on score leaderboards. Development follows Spec Driven Design using `/spec` and `/spec-impl` conventions from https://github.com/Klerith/fernando-skills.
+Arcade Vault (`README.md`) es una plataforma de arcade online donde los usuarios juegan juegos estilo retro (Bloque Buster, Caída, Serpentina, Glotón, Invasores, Rocas, Ranaria, Duelo Pixel) y compiten en tablas de puntuación. El desarrollo sigue Spec Driven Design usando las convenciones `/spec` y `/spec-impl` de https://github.com/Klerith/fernando-skills.
 
-The app is a Next.js App Router project (`app/`) currently at the fresh `create-next-app` scaffold stage — only `app/layout.tsx` and `app/page.tsx` exist so far.
+La app es un proyecto Next.js con App Router (`app/`), actualmente en el estado inicial del scaffold de `create-next-app` — solo existen `app/layout.tsx` y `app/page.tsx` por ahora.
 
-### Design reference (not runnable Next.js code)
+### Referencia de diseño (no es código Next.js ejecutable)
 
-`resources/templates/` contains a static HTML/CDN-React prototype of the full UI that the real app is built from — treat it as a design/behavior spec, not code to import directly:
+`resources/templates/` contiene un prototipo estático en HTML/CDN-React de toda la UI a partir del cual se construye la app real — tratarlo como una especificación de diseño/comportamiento, no como código para importar directamente:
 
-- `Arcade Vault.html` — standalone HTML shell that loads the `.jsx` files via CDN React/Babel.
-- `app.jsx` — root component with hash-based routing (`biblioteca`, `detalle`, `player`, `auth`, `salon`) and `localStorage`-backed auth/score state. In the real app this routing/state must be re-implemented using App Router conventions and real persistence, not ported as-is.
-- `nav.jsx`, `biblioteca.jsx` (game library/grid), `detalle.jsx` (game detail), `reproductor.jsx` (game player screen), `auth.jsx` (login/signup), `salon.jsx` (hall of fame / leaderboard) — one prototype component per screen.
-- `data.jsx` — mock data: the `GAMES` catalog (id, title, category, color, best score, plays), `CATS` categories, `PLAYERS` list, and `seededScores()` for generating mock leaderboard rows.
-- `styles.css` — the neon/retro-arcade design system: CSS custom properties for colors (`--cyan`, `--magenta`, `--yellow`, `--green`, gold/silver/bronze rank colors), fonts (`--pixel`: "Press Start 2P", `--mono`: "JetBrains Mono"), and the scanline/grid background effect. Reuse these tokens when building real Tailwind/CSS styles so the app matches the prototype's look.
+- `Arcade Vault.html` — shell HTML independiente que carga los archivos `.jsx` vía CDN de React/Babel.
+- `app.jsx` — componente raíz con ruteo basado en hash (`biblioteca`, `detalle`, `player`, `auth`, `salon`) y estado de auth/puntajes persistido en `localStorage`. En la app real este ruteo/estado debe reimplementarse usando las convenciones de App Router y persistencia real, no portarse tal cual.
+- `nav.jsx`, `biblioteca.jsx` (grilla/biblioteca de juegos), `detalle.jsx` (detalle de juego), `reproductor.jsx` (pantalla del jugador), `auth.jsx` (login/registro), `salon.jsx` (salón de la fama / tabla de líderes) — un componente prototipo por pantalla.
+- `data.jsx` — datos mock: el catálogo `GAMES` (id, título, categoría, color, mejor puntaje, jugadas), categorías `CATS`, lista `PLAYERS`, y `seededScores()` para generar filas de leaderboard simuladas.
+- `styles.css` — el sistema de diseño neón/retro-arcade: variables CSS para colores (`--cyan`, `--magenta`, `--yellow`, `--green`, colores de rango oro/plata/bronce), fuentes (`--pixel`: "Press Start 2P", `--mono`: "JetBrains Mono"), y el efecto de fondo con scanlines/grilla. Reutilizar estos tokens al construir los estilos reales en Tailwind/CSS para que la app coincida con el look del prototipo.
 
-## Working in this repo
+## Trabajando en este repo
 
-- **This Next.js version differs from your training data.** Before writing routing, data-fetching, caching, image, or middleware code, check the matching guide under `node_modules/next/dist/docs/01-app/` (getting-started and guides) and specifically `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md` for breaking changes versus Next.js as you know it — notable ones: Turbopack is the default bundler, Request APIs (`params`, `searchParams`, cookies/headers) are async, `middleware.ts` is being renamed to `proxy.ts`, and `next/image` defaults (quality list, cache TTL, redirect limits) changed.
-- Path alias `@/*` maps to the project root (see `tsconfig.json`).
-- Styling uses Tailwind CSS v4 (`@tailwindcss/postcss`, no `tailwind.config.*` file — config lives in `app/globals.css`/CSS).
+- **Esta versión de Next.js difiere de tus datos de entrenamiento.** Antes de escribir código de ruteo, data-fetching, caching, imágenes o middleware, revisar la guía correspondiente en `node_modules/next/dist/docs/01-app/` (getting-started y guides) y en particular `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md` para ver los breaking changes respecto al Next.js que ya conocés — los más relevantes: Turbopack es el bundler por defecto, las Request APIs (`params`, `searchParams`, cookies/headers) son asíncronas, `middleware.ts` está siendo renombrado a `proxy.ts`, y cambiaron los valores por defecto de `next/image` (lista de qualities, cache TTL, límite de redirects).
+- El alias de path `@/*` apunta a la raíz del proyecto (ver `tsconfig.json`).
+- El estilado usa Tailwind CSS v4 (`@tailwindcss/postcss`, sin archivo `tailwind.config.*` — la config vive en `app/globals.css`/CSS).
 
-## Commands
+## Comandos
 
-- `npm run dev` — start the dev server (Turbopack by default in this Next.js version).
-- `npm run build` — production build.
-- `npm run start` — run the production build.
-- `npm run lint` — ESLint via flat config (`eslint.config.mjs`, extends `eslint-config-next` core-web-vitals + typescript).
+- `npm run dev` — inicia el servidor de desarrollo (Turbopack por defecto en esta versión de Next.js).
+- `npm run build` — build de producción.
+- `npm run start` — corre el build de producción.
+- `npm run lint` — ESLint vía flat config (`eslint.config.mjs`, extiende `eslint-config-next` core-web-vitals + typescript).
 
-There is no test runner configured yet.
+Todavía no hay un test runner configurado.
