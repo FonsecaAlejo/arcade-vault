@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useSession } from "@/lib/session";
 
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { user, logout } = useSession();
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" || pathname.startsWith("/juegos") : pathname.startsWith(href);
 
@@ -32,9 +34,15 @@ export default function Nav() {
           <span className="coin" />
           <span>CRÉDITOS · 03</span>
         </div>
-        <Link href="/auth" className="btn auth-btn">
-          Iniciar Sesión
-        </Link>
+        {user ? (
+          <button className="btn ghost auth-btn" onClick={logout}>
+            {user.name} ▾
+          </button>
+        ) : (
+          <Link href="/auth" className="btn auth-btn">
+            Iniciar Sesión
+          </Link>
+        )}
         <button
           className="btn ghost hamburger"
           onClick={() => setOpen(true)}
@@ -66,13 +74,24 @@ export default function Nav() {
         >
           Salón de la Fama
         </Link>
-        <Link
-          href="/auth"
-          className={isActive("/auth") ? "active" : ""}
-          onClick={() => setOpen(false)}
-        >
-          Iniciar Sesión
-        </Link>
+        {user ? (
+          <a
+            onClick={() => {
+              logout();
+              setOpen(false);
+            }}
+          >
+            {user.name} · Cerrar sesión
+          </a>
+        ) : (
+          <Link
+            href="/auth"
+            className={isActive("/auth") ? "active" : ""}
+            onClick={() => setOpen(false)}
+          >
+            Iniciar Sesión
+          </Link>
+        )}
         <div style={{ flex: 1 }} />
         <div className="pixel" style={{ fontSize: 9, color: "var(--ink-faint)", letterSpacing: "0.16em" }}>
           CRÉDITOS · 03

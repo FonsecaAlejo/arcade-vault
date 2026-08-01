@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Game } from "@/lib/games";
+import { saveScore, useSession } from "@/lib/session";
 
 export default function GamePlayer({ game }: { game: Game }) {
+  const { user } = useSession();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
@@ -12,6 +14,10 @@ export default function GamePlayer({ game }: { game: Game }) {
   const [over, setOver] = useState(false);
   const [name, setName] = useState("INVITADO");
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (user) setName(user.name);
+  }, [user]);
 
   useEffect(() => {
     if (over || paused) return;
@@ -107,7 +113,13 @@ export default function GamePlayer({ game }: { game: Game }) {
                   onChange={(e) => setName(e.target.value.toUpperCase().slice(0, 10))}
                   placeholder="TUS INICIALES"
                 />
-                <button className="btn yellow" onClick={() => setSaved(true)}>
+                <button
+                  className="btn yellow"
+                  onClick={() => {
+                    saveScore({ game: game.id, score, name });
+                    setSaved(true);
+                  }}
+                >
                   GUARDAR PUNTUACIÓN
                 </button>
               </div>

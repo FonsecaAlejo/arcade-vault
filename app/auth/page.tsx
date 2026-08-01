@@ -1,8 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { useSession } from "@/lib/session";
 
 export default function AuthPage() {
+  const router = useRouter();
+  const { login } = useSession();
   const [tab, setTab] = useState<"in" | "up">("in");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
@@ -10,6 +14,12 @@ export default function AuthPage() {
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
+    login({ name: (user || "PLAYER1").toUpperCase().slice(0, 10) });
+    router.push("/");
+  };
+
+  const playAsGuest = () => {
+    router.push("/");
   };
 
   return (
@@ -53,7 +63,7 @@ export default function AuthPage() {
           </button>
         </form>
 
-        <button className="btn ghost" style={{ width: "100%", marginTop: 10 }} type="button">
+        <button className="btn ghost" style={{ width: "100%", marginTop: 10 }} type="button" onClick={playAsGuest}>
           JUGAR COMO INVITADO
         </button>
 
