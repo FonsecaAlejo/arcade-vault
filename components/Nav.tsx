@@ -25,7 +25,7 @@ export default function Nav() {
           <Link href="/" className={isActive("/") ? "active" : ""}>
             Biblioteca
           </Link>
-          <Link href="/salon" className={isActive("/salon") ? "active" : ""}>
+          <Link href="/hall-of-fame" className={isActive("/hall-of-fame") ? "active" : ""}>
             Salón de la Fama
           </Link>
         </div>
@@ -68,8 +68,8 @@ export default function Nav() {
           Biblioteca
         </Link>
         <Link
-          href="/salon"
-          className={isActive("/salon") ? "active" : ""}
+          href="/hall-of-fame"
+          className={isActive("/hall-of-fame") ? "active" : ""}
           onClick={() => setOpen(false)}
         >
           Salón de la Fama
