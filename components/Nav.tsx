@@ -10,7 +10,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
   const { user, logout } = useSession();
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" || pathname.startsWith("/juegos") : pathname.startsWith(href);
+    href === "/" ? pathname === "/" || pathname.startsWith("/games") : pathname.startsWith(href);
 
   return (
     <>
