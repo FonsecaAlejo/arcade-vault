@@ -8,3 +8,10 @@ Siguiendo las buenas practicas recomendadas aquí: https://github.com/Klerith/fe
 
 Skills usadas
 npx skills@latest add Klerith/fernando-skills
+
+## Comandos
+
+- `npm run dev` — inicia el servidor de desarrollo (Turbopack por defecto en esta versión de Next.js).
+- `npm run build` — build de producción.
+- `npm run start` — corre el build de producción.
+- `npm run lint` — ESLint vía flat config (`eslint.config.mjs`, extiende `eslint-config-next` core-web-vitals + typescript).
