@@ -1,6 +1,6 @@
 # SPEC 02 — Rutas en inglés, página Home y tab Acerca de
 
-> **Estado:** aprobado
+> **Estado:** implementado
 > **Depende de:** 01-mvp-visual
 > **Fecha:** 2026-08-01
 > **Objetivo:** Traducir todas las rutas visibles de la app a inglés, implementar la página Home (landing) en `/` con las 6 secciones del prototipo `home-about/home.jsx`, mover la Biblioteca a `/games`, y agregar el tab "Acerca de" en el Nav apuntando a `/about` sin crear todavía esa página.
