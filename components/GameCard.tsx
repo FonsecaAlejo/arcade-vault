@@ -8,7 +8,7 @@ export default function GameCard({ game }: { game: Game }) {
   const tiltRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const goToDetail = () => router.push(`/juegos/${game.id}`);
+  const goToDetail = () => router.push(`/games/${game.id}`);
 
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
     const el = tiltRef.current;
