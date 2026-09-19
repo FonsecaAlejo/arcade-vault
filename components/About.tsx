@@ -43,15 +43,37 @@ export default function About() {
   const [form, setForm] = useState<ContactFormState>(EMPTY_FORM);
   const [sent, setSent] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.msg.trim()) {
       setShake(true);
       setTimeout(() => setShake(false), 400);
       return;
     }
-    setSent(form.name.trim());
+
+    setSending(true);
+    setError(false);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = (await res.json()) as { ok: boolean };
+      if (data.ok) {
+        setSent(form.name.trim());
+      } else {
+        setError(true);
+      }
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -108,7 +130,36 @@ export default function About() {
           </div>
 
           <form className={"contact-form" + (shake ? " shake" : "")} onSubmit={onSubmit}>
-            {!sent ? (
+            {error ? (
+              <div className="terminal-success has-error">
+                <div className="term-bar">
+                  <span className="dot r"></span>
+                  <span className="dot y"></span>
+                  <span className="dot g"></span>
+                  <span className="term-title">VAULT-OS // TERMINAL</span>
+                </div>
+                <div className="term-body">
+                  <div className="line">
+                    <span className="prompt">vault@arcade:~$</span> ./send_message --to=team
+                  </div>
+                  <div className="line dim">[OK] Conectando con servidor…</div>
+                  <div className="line error">[ERROR] No se pudo transmitir el paquete.</div>
+                  <div className="line error">
+                    &gt; ENVÍO FALLIDO. TUS DATOS NO SE PERDIERON. INTENTA DE NUEVO.
+                    <span className="caret">_</span>
+                  </div>
+                  <div style={{ marginTop: 18 }}>
+                    <button
+                      className="btn ghost"
+                      type="button"
+                      onClick={() => setError(false)}
+                    >
+                      REINTENTAR
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : !sent ? (
               <>
                 <div className="field">
                   <label>NOMBRE</label>
@@ -151,8 +202,8 @@ export default function About() {
                     onChange={(e) => setForm({ ...form, company: e.target.value })}
                   />
                 </div>
-                <button className="btn xl press" type="submit" style={{ width: "100%" }}>
-                  ▶ ENVIAR MENSAJE
+                <button className="btn xl press" type="submit" disabled={sending} style={{ width: "100%" }}>
+                  {sending ? "▶ ENVIANDO…" : "▶ ENVIAR MENSAJE"}
                 </button>
               </>
             ) : (
