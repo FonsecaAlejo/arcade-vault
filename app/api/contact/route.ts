@@ -1,3 +1,5 @@
+import { Resend } from "resend";
+
 interface ContactRequestBody {
   name: string;
   email: string;
@@ -29,5 +31,27 @@ export async function POST(request: Request) {
     return json({ ok: true });
   }
 
-  return json({ ok: true });
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return json({ ok: false, error: "El servicio de correo no está configurado." }, { status: 500 });
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error: sendError } = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "alecjoc85@gmail.com",
+      replyTo: email,
+      subject: "Nuevo mensaje de contacto — Arcade Vault",
+      text: `Nombre: ${name}\nCorreo: ${email}\n\nMensaje:\n${msg}`,
+    });
+
+    if (sendError) {
+      return json({ ok: false, error: "No se pudo enviar el mensaje." }, { status: 502 });
+    }
+
+    return json({ ok: true });
+  } catch {
+    return json({ ok: false, error: "No se pudo enviar el mensaje." }, { status: 502 });
+  }
 }
