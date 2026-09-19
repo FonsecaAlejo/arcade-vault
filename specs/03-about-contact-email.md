@@ -1,6 +1,6 @@
 # SPEC 03 — Página About y envío de correo de contacto con Resend
 
-> **Estado:** aprobado
+> **Estado:** implementado
 > **Depende de:** 02-home-implementation
 > **Fecha:** 2026-08-02
 > **Objetivo:** Implementar la página `/about` reproduciendo exactamente el prototipo `references/templates/home-about/about.jsx` (secciones Acerca de + Contacto), conectando el formulario de contacto a un envío de correo real vía Resend a través de un Route Handler `/api/contact`.
@@ -75,19 +75,19 @@ Convenciones:
 
 ## Criterios de aceptación
 
-- [ ] `/about` muestra la sección "Acerca de" (kicker, título, misión, 3 highlights con sus iconos SVG) igual que `about.jsx`.
-- [ ] El banner divisor animado y la sección de contacto aparecen con efecto reveal al hacer scroll (no visibles de entrada, aparecen al entrar en viewport).
-- [ ] El formulario de contacto tiene los campos Nombre, Correo electrónico y Mensaje, más un campo honeypot invisible para humanos.
-- [ ] Enviar el formulario con algún campo vacío dispara el shake y no envía nada.
-- [ ] Enviar el formulario completo con `RESEND_API_KEY` configurada correctamente envía un correo real a `alecjoc85@gmail.com` desde `onboarding@resend.dev`, con `reply-to` igual al email ingresado en el formulario.
-- [ ] Tras un envío exitoso, se muestra el `terminal-success` con las líneas de log simuladas y el mensaje final con el nombre en mayúsculas, igual que el prototipo.
-- [ ] "ENVIAR OTRO MENSAJE" desde el estado de éxito limpia el formulario y permite un nuevo envío.
-- [ ] Si `RESEND_API_KEY` no está configurada o la llamada a Resend falla, se muestra el estado de error (terminal con líneas `[ERROR]`) con opción de reintentar sin perder lo escrito en el formulario.
-- [ ] Completar el campo honeypot (simulando un bot) hace que el servidor responda éxito sin enviar ningún correo real.
-- [ ] El Route Handler rechaza (`{ ok: false }`) un email con formato inválido, sin depender solo de la validación del cliente.
-- [ ] El tab "Acerca de" del Nav navega a `/about` y queda marcado como activo (ya funcionaba desde el spec 02, se re-verifica que sigue igual).
-- [ ] Ninguna pantalla produce errores en la consola del navegador al cargar `/about` o interactuar con el formulario.
-- [ ] `.env.template` documenta `RESEND_API_KEY` sin exponer ningún valor real.
+- [x] `/about` muestra la sección "Acerca de" (kicker, título, misión, 3 highlights con sus iconos SVG) igual que `about.jsx`.
+- [x] El banner divisor animado y la sección de contacto aparecen con efecto reveal al hacer scroll (no visibles de entrada, aparecen al entrar en viewport).
+- [x] El formulario de contacto tiene los campos Nombre, Correo electrónico y Mensaje, más un campo honeypot invisible para humanos.
+- [x] Enviar el formulario con algún campo vacío dispara el shake y no envía nada.
+- [x] Enviar el formulario completo con `RESEND_API_KEY` configurada correctamente envía un correo real a `alecjoc85@gmail.com` desde `onboarding@resend.dev`, con `reply-to` igual al email ingresado en el formulario.
+- [x] Tras un envío exitoso, se muestra el `terminal-success` con las líneas de log simuladas y el mensaje final con el nombre en mayúsculas, igual que el prototipo.
+- [x] "ENVIAR OTRO MENSAJE" desde el estado de éxito limpia el formulario y permite un nuevo envío.
+- [x] Si `RESEND_API_KEY` no está configurada o la llamada a Resend falla, se muestra el estado de error (terminal con líneas `[ERROR]`) con opción de reintentar sin perder lo escrito en el formulario.
+- [x] Completar el campo honeypot (simulando un bot) hace que el servidor responda éxito sin enviar ningún correo real.
+- [x] El Route Handler rechaza (`{ ok: false }`) un email con formato inválido, sin depender solo de la validación del cliente.
+- [x] El tab "Acerca de" del Nav navega a `/about` y queda marcado como activo (ya funcionaba desde el spec 02, se re-verifica que sigue igual).
+- [x] Ninguna pantalla produce errores en la consola del navegador al cargar `/about` o interactuar con el formulario.
+- [x] `.env.template` documenta `RESEND_API_KEY` sin exponer ningún valor real.
 
 ## Decisiones
 
