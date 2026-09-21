@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import type { Game } from "@/app/data/games";
+import { GAMES } from "@/app/data/games";
 import { saveScore, useSession } from "@/lib/session";
 
-export default function GamePlayer({ game }: { game: Game }) {
+const AsteroidsGame = dynamic(() => import("@/components/games/AsteroidsGame"), { ssr: false });
+
+const game = GAMES.find((g) => g.id === "asteroids")!;
+
+export default function AsteroidsPlayPage() {
   const { user } = useSession();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -14,22 +19,14 @@ export default function GamePlayer({ game }: { game: Game }) {
   const [over, setOver] = useState(false);
   const [name, setName] = useState("INVITADO");
   const [saved, setSaved] = useState(false);
+  const [restartKey, setRestartKey] = useState(0);
 
   useEffect(() => {
     if (user) setName(user.name);
   }, [user]);
 
-  useEffect(() => {
-    if (over || paused) return;
-    const t = setInterval(() => setScore((s) => s + Math.floor(10 + Math.random() * 90)), 220);
-    return () => clearInterval(t);
-  }, [over, paused]);
-
-  useEffect(() => {
-    if (score > 0 && score % 2500 < 100) setLevel((l) => l + 1);
-  }, [score]);
-
   const endGame = () => setOver(true);
+
   const restart = () => {
     setScore(0);
     setLives(3);
@@ -37,6 +34,7 @@ export default function GamePlayer({ game }: { game: Game }) {
     setPaused(false);
     setOver(false);
     setSaved(false);
+    setRestartKey((k) => k + 1);
   };
 
   return (
@@ -75,14 +73,18 @@ export default function GamePlayer({ game }: { game: Game }) {
 
       <div className="crt">
         <div className="crt-screen">
-          <div className="game-arena">
-            <div className="grid-floor" />
-            <div className="enemy e1" />
-            <div className="enemy e2" />
-            <div className="enemy e3" />
-            <div className="player-ship" />
-          </div>
-          {paused && (
+          <AsteroidsGame
+            key={restartKey}
+            paused={paused || over}
+            onScoreChange={setScore}
+            onLivesChange={setLives}
+            onLevelChange={setLevel}
+            onGameOver={(finalScore) => {
+              setScore(finalScore);
+              setOver(true);
+            }}
+          />
+          {paused && !over && (
             <div className="crt-content" style={{ background: "rgba(0,0,0,0.6)", zIndex: 5 }}>
               <div>
                 <div className="pixel neon-yellow" style={{ fontSize: 22 }}>EN PAUSA</div>

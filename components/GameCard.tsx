@@ -2,7 +2,7 @@
 
 import { useRef, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { Game } from "@/lib/games";
+import type { Game } from "@/app/data/games";
 
 export default function GameCard({ game }: { game: Game }) {
   const tiltRef = useRef<HTMLDivElement>(null);
