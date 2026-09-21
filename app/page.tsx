@@ -5,7 +5,7 @@ import Link from "next/link";
 import FloatingSilhouettes from "@/components/FloatingSilhouettes";
 import MiniCard from "@/components/MiniCard";
 import FeatureIcon from "@/components/FeatureIcon";
-import { GAMES } from "@/lib/games";
+import { GAMES } from "@/app/data/games";
 
 function useReveal() {
   useEffect(() => {

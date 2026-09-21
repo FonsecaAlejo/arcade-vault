@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { GAMES, seededScores } from "@/lib/games";
+import { GAMES, seededScores } from "@/app/data/games";
 import { useSession } from "@/lib/session";
 
 export default function SalonPage() {

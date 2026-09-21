@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { Game } from "@/lib/games";
+import type { Game } from "@/app/data/games";
 import { saveScore, useSession } from "@/lib/session";
 
 export default function GamePlayer({ game }: { game: Game }) {

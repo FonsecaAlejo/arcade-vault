@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GAMES, seededScores } from "@/lib/games";
+import { GAMES, seededScores } from "@/app/data/games";
 
 export default async function GameDetailPage({
   params,
