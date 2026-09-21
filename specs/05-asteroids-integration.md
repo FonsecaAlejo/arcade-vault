@@ -1,6 +1,6 @@
 # SPEC 05 — Integración del juego Asteroids
 
-> **Estado:** aprobado
+> **Estado:** Implementado
 > **Depende de:** 04-supabase-integration
 > **Fecha:** 2026-05-15
 > **Objetivo:** Integrar el juego Asteroids (canvas puro) como un nuevo juego jugable en la plataforma con ID `asteroids`, conectando su estado interno (score, vidas, nivel, game over) con el HUD y la interfaz React de la play-page dedicada.
