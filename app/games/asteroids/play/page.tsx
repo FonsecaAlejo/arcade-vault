@@ -3,12 +3,14 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { GAMES } from "@/app/data/games";
-import { saveScore, useSession } from "@/lib/session";
+import { useSession } from "@/lib/session";
+import { createClient } from "@/lib/supabase/client";
 
 const AsteroidsGame = dynamic(() => import("@/components/games/AsteroidsGame"), { ssr: false });
 
-const game = GAMES.find((g) => g.id === "asteroids")!;
+const GAME_ID = "asteroids";
+const GAME_TITLE = "ASTEROIDS";
+const PLAYER_NAME_KEY = "av_player_name";
 
 export default function AsteroidsPlayPage() {
   const { user } = useSession();
@@ -24,6 +26,16 @@ export default function AsteroidsPlayPage() {
   useEffect(() => {
     if (user) setName(user.name);
   }, [user]);
+
+  useEffect(() => {
+    if (!over) return;
+    try {
+      const savedName = localStorage.getItem(PLAYER_NAME_KEY);
+      if (savedName) setName(savedName);
+    } catch {
+      // localStorage no disponible — se mantiene el nombre actual.
+    }
+  }, [over]);
 
   const endGame = () => setOver(true);
 
@@ -65,7 +77,7 @@ export default function AsteroidsPlayPage() {
           <button className="btn magenta" onClick={endGame}>
             FIN
           </button>
-          <Link href={`/games/${game.id}`} className="btn ghost">
+          <Link href={`/games/${GAME_ID}`} className="btn ghost">
             SALIR
           </Link>
         </div>
@@ -97,7 +109,7 @@ export default function AsteroidsPlayPage() {
         </div>
         <div className="crt-bottom">
           <span className="led">SEÑAL OK</span>
-          <span>{game.title} · CRT-83 · 60 HZ</span>
+          <span>{GAME_TITLE} · CRT-83 · 60 HZ</span>
           <span>CARGA · 1MB</span>
         </div>
       </div>
@@ -117,9 +129,18 @@ export default function AsteroidsPlayPage() {
                 />
                 <button
                   className="btn yellow"
-                  onClick={() => {
-                    saveScore({ game: game.id, score, name });
+                  disabled={saved}
+                  onClick={async () => {
                     setSaved(true);
+                    try {
+                      localStorage.setItem(PLAYER_NAME_KEY, name);
+                    } catch {
+                      // localStorage no disponible — se omite la persistencia del nombre.
+                    }
+                    const supabase = createClient();
+                    await supabase
+                      .from("scores")
+                      .insert({ game_id: GAME_ID, player_name: name, score, user_id: null });
                   }}
                 >
                   GUARDAR PUNTUACIÓN
